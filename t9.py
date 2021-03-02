@@ -1,9 +1,6 @@
+from matplotlib import pyplot as plt
 import numpy as np
-import operator as op
 
+plt.scatter([1, 2, 3], [1, 2, 3])
+plt.show()
 
-a = [1, 2, 3]
-b = [3, 4, 5]
-x = op.lt(a, b)
-print(x.__index__())
-print(op.index(x))
