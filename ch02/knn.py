@@ -118,49 +118,62 @@ def img2Vec(filename):
 def handWriteTest():
     hwLables = []
     trainSetDir = os.listdir("./trainingDigits")
-    countOfFiles = len(trainSetDir)
-    trainMat = np.zeros((countOfFiles, 1024))
-    for i in range(countOfFiles):
+    rowOfTrainSet = len(trainSetDir)
+    trainMat = np.zeros((rowOfTrainSet, 1024))
+    for i in range(rowOfTrainSet):
         fileNameAndExt = trainSetDir[i]
         fileName = fileNameAndExt.split('.')[0]
         fileNum = int(fileName.split('_')[0])
         trainMat[i] = img2Vec("./trainingDigits/%s" % fileNameAndExt)
         hwLables.append(fileNum)
-        print(trainMat[i], hwLables[i])
-        pass
+
+    testSetDir = os.listdir("./testDigits")
+    errCount = 0.0
+    rowOfTestSet = len(testSetDir)
+    for i in range(rowOfTestSet):
+        fileNameAndExt = testSetDir[i]
+        fileName = fileNameAndExt.split('.')[0]
+        testVec = img2Vec("./testDigits/%s" % fileNameAndExt)
+        testLabel = int(fileName.split('_')[0])
+        testClsRes = classify(testVec, trainMat, hwLables, 3)
+        print("the classifier came back with: %d, the real answer is: %d" % (testClsRes, testLabel))
+        if testClsRes != testLabel:
+            errCount += 1.0
+    print("the total number of errors is: %d" % errCount)
+    print("the total error rate is: %f" % (errCount / float(rowOfTestSet)))
 
     pass
 
 
 if __name__ == '__main__':
     ########## Test 1 ##########
-    # group, labels = createDataSet()
-    # tp = [0.0, 0.0]
-    # tpCls = classify(tp, group, labels, 3)
-    # print("{0} --> {1}".format(tp, tpCls))
+    group, labels = createDataSet()
+    tp = [0.0, 0.0]
+    tpCls = classify(tp, group, labels, 3)
+    print("{0} --> {1}".format(tp, tpCls))
 
     ########## Test 2 ##########
     # file2mat("/dev/random")
-    # datDataMat, datLabels = file2mat("./datingTestSet2.txt")
-    # normMat, deltas, minVals = autoNorm(datDataMat)
-    # print("datDataMat:\n", datDataMat)
-    # print("datLabels:\n", datLabels)
-    # print(datDataMat[:, 1], datDataMat[:, 2])
-    # print(np.array(datLabels))
+    datDataMat, datLabels = file2mat("./datingTestSet2.txt")
+    normMat, deltas, minVals = autoNorm(datDataMat)
+    print("datDataMat:\n", datDataMat)
+    print("datLabels:\n", datLabels)
+    print(datDataMat[:, 1], datDataMat[:, 2])
+    print(np.array(datLabels))
     # plt.scatter(datDataMat[:, 1], datDataMat[:, 2], 6 ** 2)
     # print(plt.rcParams["lines.markersize"])
-    # plt.scatter(datDataMat[:, 1], datDataMat[:, 2], datLabels)
-    # plt.grid()
-    # plt.show()
+    plt.scatter(datDataMat[:, 1], datDataMat[:, 2], c=np.array(datLabels) * 15)
+    plt.grid()
+    plt.show()
 
     ########## Test 3 ##########
-    # datClsTest()
+    datClsTest()
 
     ########## Test 4 ##########
-    # clsPerson()
+    clsPerson()
 
     ########## Test 5 ##########
-    # img2Vec("trainingDigits/0_0.txt")
+    img2Vec("trainingDigits/0_0.txt")
 
     ########## Test 6 ##########
     handWriteTest()
