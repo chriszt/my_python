@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import operator as op
+import os
 
 
 def classify(inX, ds, dsLabs, k):
@@ -24,9 +25,6 @@ def classify(inX, ds, dsLabs, k):
     # print("sortedClsCount:\n", sortedClsCount)
     # print("sortedClsCount[0][0]:\n", sortedClsCount[0][0])
     return sortedClsCount[0][0]
-2
-
-
 
 
 def file2mat(filename):
@@ -119,6 +117,17 @@ def img2Vec(filename):
 
 def handWriteTest():
     hwLables = []
+    trainSetDir = os.listdir("./trainingDigits")
+    countOfFiles = len(trainSetDir)
+    trainMat = np.zeros((countOfFiles, 1024))
+    for i in range(countOfFiles):
+        fileNameAndExt = trainSetDir[i]
+        fileName = fileNameAndExt.split('.')[0]
+        fileNum = int(fileName.split('_')[0])
+        trainMat[i] = img2Vec("./trainingDigits/%s" % fileNameAndExt)
+        hwLables.append(fileNum)
+        print(trainMat[i], hwLables[i])
+        pass
 
     pass
 
