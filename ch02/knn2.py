@@ -21,16 +21,16 @@ def test2():
     # y = [0, 0, 1, 1]
     # print(X)
     # print(y)
-    # cif = neighbors.KNeighborsClassifier(3)
-    # cif.fit(X, y)
-    # clsRet = cif.predict([[1.6]])
+    # clf = neighbors.KNeighborsClassifier(3)
+    # clf.fit(X, y)
+    # clsRet = clf.predict([[1.6]])
     # print(clsRet)
 
     X, y = datasets.make_blobs(200, centers=2)
     testData = [6.75, 4.82]
 
-    cif = neighbors.KNeighborsClassifier()
-    cif.fit(X, y)
+    clf = neighbors.KNeighborsClassifier()
+    clf.fit(X, y)
 
     X0_min = X[:, 0].min() - 1
     X0_max = X[:, 0].max() + 1
@@ -39,20 +39,52 @@ def test2():
     t0 = np.arange(X0_min, X0_max, 0.02)
     t1 = np.arange(X1_min, X1_max, 0.02)
     xx, yy = np.meshgrid(t0, t1)
-    t3 = xx.ravel()
-    t4 = yy.ravel()
-    t5 = np.c_[t3, t4]
-    t6 = cif.predict(t5)
-    testDataRes = cif.predict(np.array(testData).reshape(1, 2))
+    t2 = xx.ravel()
+    t3 = yy.ravel()
+    t4 = np.c_[t2, t3]
+    t5 = clf.predict(t4)
+    testDataRes = clf.predict(np.array(testData).reshape(1, 2))
     print(testDataRes)
-    t7 = t6.reshape(xx.shape)
-    plt.pcolormesh(xx, yy, t7, cmap=plt.cm.Pastel1)
+    t6 = t5.reshape(xx.shape)
+    plt.pcolormesh(xx, yy, t6, cmap=plt.cm.Pastel1)
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.spring, edgecolors='k')
     plt.scatter(testData[0], testData[1], 200, 'r', '*')
     plt.xlim(xx.min(), xx.max())
     plt.ylim(yy.min(), yy.max())
     plt.title("Classifier: KNN")
     plt.show()
+    pass
+
+
+def test3():
+    X, y = datasets.make_blobs(500, centers=5)
+
+    clf = neighbors.KNeighborsClassifier()
+    clf.fit(X, y)
+
+    X0_min = X[:, 0].min() - 1
+    X0_max = X[:, 0].max() + 1
+    X1_min = X[:, 1].min() - 1
+    X1_max = X[:, 1].max() + 1
+    t0 = np.arange(X0_min, X0_max, 0.02)
+    t1 = np.arange(X1_min, X1_max, 0.02)
+    xx, yy = np.meshgrid(t0, t1)
+    t2 = xx.ravel()
+    t3 = yy.ravel()
+    t4 = np.c_[t2, t3]
+    Z = clf.predict(t4)
+    Z = Z.reshape(xx.shape)
+    print("score=", clf.score(X, y))
+
+    plt.pcolormesh(xx, yy, Z, cmap=plt.cm.Pastel1)
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.spring, edgecolors='k')
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+    plt.title("Classifier: KNN")
+    plt.show()
+
+
+def test4():
 
     pass
 
@@ -61,7 +93,13 @@ if __name__ == "__main__":
     ########## Test 1 ##########
     # test1()
 
-    ########## Test 1 ##########
+    ########## Test 2 ##########
     test2()
+
+    ########## Test 3 ##########
+    # test3()
+
+    ########## Test 4 ##########
+    # test4()
 
     pass
